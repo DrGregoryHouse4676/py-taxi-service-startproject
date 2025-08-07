@@ -7,8 +7,8 @@ class Manufacturer(models.Model):
     name = models.CharField(max_length=255, unique=True)
     country = models.CharField(max_length=255)
 
-    def __str__(self) -> str:
-        return self.name
+    def __str__(self):
+        return f"{self.name} {self.country}"
 
     class Meta:
         verbose_name = "manufacturer"
@@ -24,8 +24,8 @@ class Car(models.Model):
     )
     drivers = models.ManyToManyField("Driver", related_name="cars")
 
-    def __str__(self) -> str:
-        return self.model
+    def __str__(self):
+        return f"{self.manufacturer.name} {self.model}"
 
     class Meta:
         verbose_name = "car"

@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from taxi.models import Manufacturer, Car
 import os.path
 
 
@@ -79,3 +80,23 @@ class GitignoreTests(TestCase):
             assert "idea" in gitignore_content
             assert "sqlite3" in gitignore_content
             assert "pyc" in gitignore_content
+
+class ModelTests(TestCase):
+
+    def test_create_manufacturer(self):
+        manufacturer = Manufacturer.objects.create(name="Toyota", country="Japan")
+        self.assertEqual(str(manufacturer), "Toyota Japan")
+
+    def test_create_car(self):
+        manufacturer = Manufacturer.objects.create(name="BMW", country="Germany")
+        car = Car.objects.create(model="X5", manufacturer=manufacturer)
+        self.assertEqual(str(car), "BMW X5")
+
+    def test_create_driver(self):
+        driver = get_user_model().objects.create_user(
+            username="driver1",
+            password="test12345",
+            license_number="ABC12345"
+        )
+        self.assertTrue(driver.check_password("test12345"))
+        self.assertEqual(str(driver), "driver1 (ABC12345)")
